@@ -4,8 +4,10 @@ import productReducer from "./products/productReducer";
 import { combineReducers } from "redux";
 
 
-const rootReducer = combineReducers({
 
+
+
+const rootReducer = combineReducers({
     product : productReducer ,
     cart : cartReducer,
 });
