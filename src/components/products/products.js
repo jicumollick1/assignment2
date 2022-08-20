@@ -1,50 +1,43 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProduct } from '../../redux/products/actions';
+import { addToCart } from '../../redux/cart/actions';
+import {decrementStock} from "../../redux/products/actions";
+
 const Products = () => {
 
-    const state  = useSelector((state)=> state);
-    const dispatch = useDispatch(); 
+    const state  = useSelector((state)=> state.product);
+    const dispatch = useDispatch();
 
- 
- 
-
-    // console.log(state.product.updatedState.products[0].stock);
-
-    // const stock = state?.product?.products[0]?.stock;
-
-
-  const addHandler = (value) => {
-
-    dispatch(addProduct(value));
-    // console.log('product number ', value);
-  }
-
+    const addCart = (id) => {
+        const product= state.products.find(item=>item.id ==id);
+        dispatch(addToCart(product));
+        dispatch(decrementStock(id));
+    }
 
     return (
         <div
-                    class="col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8"
-                >
-                    <div
-                        class="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
-                    >
-                        <div class="flex justify-between px-4 items-center">
-                            <div class="text-lg font-semibold">
-                                <p>Asus Vivobook X515MA ({state.product.products[0].stock})</p>
-                                <p class="text-gray-400 text-base">Tk 35,500</p>
+                className="col-span-12 sm:col-span-12 md:col-span-7 lg:col-span-8 xxl:col-span-8">
+                    
+                    {
+                        state && state.products.length>0 && state.products.map(item=>(
+                            <div
+                        className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4" key={item.id}>
+                            <div className="flex justify-between px-4 items-center">
+                            <div className="text-lg font-semibold">
+                                <p>{item.name} ({item.stock})</p>
+                                <p className="text-gray-400 text-base">Tk {item.price}</p>
                             </div>
-                            <div class="text-lg font-semibold">
+                            <div className="text-lg font-semibold">
                                 <button
-                                    class="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-2 rounded-full inline-flex items-center"
+                                    className="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-2 rounded-full inline-flex items-center"
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6"
+                                        className="h-6 w-6"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         stroke="currentColor"
-
-                                        onClick={() => addHandler(1)}
+                                        onClick={() => addCart(item.id)}
                                     >
                                         <path
                                             stroke-linecap="round"
@@ -55,72 +48,15 @@ const Products = () => {
                                     </svg>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
-                    >
-                        <div class="flex justify-between px-4 items-center">
-                            <div class="text-lg font-semibold">
-                                <p>Dell E1916HV 18.5 Inch ({state.product.products[1].stock})</p>
-                                <p class="text-gray-400 text-base">Tk 9,300</p>
                             </div>
-                            <div class="text-lg font-semibold">
-                                <button
-                                    class="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-2 rounded-full inline-flex items-center"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        onClick={() => addHandler(2)}
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                </button>
                             </div>
-                        </div>
-                    </div>
-                    <div
-                        class="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
-                    >
-                        <div class="flex justify-between px-4 items-center">
-                            <div class="text-lg font-semibold">
-                                <p>Canon Eos 4000D 18MP ({state.product.products[2].stock})</p>
-                                <p class="text-gray-400 text-base">Tk 36,500</p>
-                            </div>
-                            <div class="text-lg font-semibold">
-                                <button
-                                    class="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-2 rounded-full inline-flex items-center"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-6 w-6"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                        onClick={() => addHandler(3)}
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                        ))
+                    }
+                
+                   
                 </div>
+    
     );
 };
 
-export default Products;
+export default  Products;

@@ -1,53 +1,62 @@
 import React from 'react';
-import { useSelector } from 'react-redux/es/exports';
+import { useSelector,useDispatch } from 'react-redux/es/exports';
 import CartItem from './CartItem';
+import {incrementCart,decrementCart} from "../../redux/cart/actions";
+import {incrementStock, decrementStock} from "../../redux/products/actions";
+
+
 const Cart = () => {
+    const state = useSelector((state)=> state.cart);
+    const dispatch = useDispatch();
 
-    const state = useSelector((state)=> state);
+    const totalItem= state.carts.reduce((prev,curr)=> prev+curr.cartCount,0);
 
-    // console.log(state.product.products);
+    const totalPrice=  state.carts.reduce((prev,curr)=> prev+curr.cartCount * curr.price,0);
 
+    const updateCart=(type,id)=>{
+    if(type == "increment"){
+        dispatch(incrementCart(id));
+        dispatch(decrementStock(id));
+    }else{
+        dispatch(decrementCart(id));
+        dispatch(incrementStock(id));
+    }
+    }
 
     return (
         <div
-        class="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4"
+        className="col-span-12 sm:col-span-12 md:col-span-5 lg:col-span-4 xxl:col-span-4"
     >
         <div
-            class="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4" id='parentDiv'
+            className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4" id='parentDiv'
         >
 
             {
-                state.product.products.map((item)=> {
-
-                    console.log(item);
-
-                    if(item.inserted === true){
-                        return <>
-                        <CartItem name={item.name} quantity={item.quantity}></CartItem>
-                        </>
-                    }
-
-                })
+                state && state.carts.length>0 ? state.carts.map((item)=> (
+                   <div key={item.id}>
+                        <CartItem id={item.id} name={item.name} quantity={item.cartCount} updateCart={updateCart}></CartItem>
+                       </div>
+                )): "Cart is Empty, Add Something"
             }
            
         </div>
         <div
-            class="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
+            className="bg-white py-4 px-4 shadow-md rounded-lg my-4 mx-4"
         >
              <div
-                class="flex justify-center items-center text-center"
+                className="flex justify-center items-center text-center"
             >
-                <div class="text-xl font-semibold">
+                <div className="text-xl font-semibold">
                     <p>Total Item</p>
-                    <p class="text-5xl">0</p>
+                    <p className="text-5xl">{totalItem}</p>
                 </div>
             </div>
             <div
-                class="flex justify-center items-center text-center"
+                className="flex justify-center items-center text-center"
             >
-                <div class="text-xl font-semibold">
+                <div className="text-xl font-semibold">
                     <p>Total Price</p>
-                    <p class="text-5xl">0</p>
+                    <p className="text-5xl">{totalPrice}</p>
                 </div>
             </div>
         </div>

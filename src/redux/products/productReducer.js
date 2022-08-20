@@ -1,11 +1,5 @@
 
-import { addProduct, addItem } from "./actions";
-
-const parentDiv = document.getElementById('parentDiv');
-
-let html = ` `;
-
-
+import {INCREMENT_STOCK,DECREMENT_STOCK} from "../actionTypes"
 
 const initialProducts = {
 
@@ -15,70 +9,53 @@ const initialProducts = {
         name: 'Asus Vivobook X515MA',
         price: 35500,
         quantity: 0 ,
-        stock: 20,
-        inserted: false
+        stock: 20
     },
     {
         id: 2,
         name: 'Dell E1916HV 18.5 Inch',
         price: 9300,
         quantity: 0,
-        stock: 35,
-        inserted: false
+        stock: 35    
     },
     {
         id: 3,
         name: 'Canon Eos 4000D 18MP',
         price: 36500,
         quantity: 0 ,
-        stock: 72,
-        inserted: false
+        stock: 72
     }]
 };
 
 
 const productReducer = (state = initialProducts, action) => {
 
-    const updatedState = {...state};
+    const updatedState= {...state};
 
-    console.log(action.payload);
+    switch(action.type){
+        case INCREMENT_STOCK:
+        updatedState.products= updatedState.products.map(item=>{
+            if(item.id == action.payload){
+                item.stock+=1;
+            }
+            return item;
+        })
+        return {...state,...updatedState}
 
-    if(action.type === 1){
+        case DECREMENT_STOCK:
+            updatedState.products= updatedState.products.map(item=>{
+                if(item.id == action.payload){
+                    item.stock -= 1;
+                }
+                return item;
+            })
 
-        updatedState.products[0].stock -= 1;
-        updatedState.products[0].quantity += 1;
-        updatedState.products[0].inserted = true;
-       
-
-    }else if (action.type === 2){
-        updatedState.products[1].stock -= 1;
-        updatedState.products[1].quantity += 1;
-
-        updatedState.products[1].inserted = true;
-
-
-
-    }else if(action.type === 3) {
-
-        updatedState.products[2].stock -= 1;
-        updatedState.products[2].quantity += 1;
-
-        updatedState.products[2].inserted = true;
-
+        return {...state,...updatedState}
+        default: 
+            return state;
     }
-
-    // console.log(parentDiv.innerHTML);
-
     
-
-
-
-return updatedState ;
-  
 }
 
 export default productReducer;
-
-
-
 

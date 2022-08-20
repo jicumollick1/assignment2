@@ -1,16 +1,8 @@
 import React from 'react';
 
-const CartItem = ({name, quantity}) => {
-
-
-
-    const clickHandler = () => {
-        
-    }
-
-
+const CartItem = ({id,name, quantity,updateCart}) => {
     return (
-        <div class="flex justify-between border-b-2 mb-2">
+<div class="flex justify-between border-b-2 mb-2" key={id}>
 <div class="text-lg py-2">
     <p>{name}</p>
 </div>
@@ -20,6 +12,7 @@ const CartItem = ({name, quantity}) => {
     >
         <button
             class="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
+            onClick={()=>updateCart('decrement', id)}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +20,6 @@ const CartItem = ({name, quantity}) => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                onClick={()=>clickHandler('decrement')}
             >
                 <path
                     stroke-linecap="round"
@@ -40,14 +32,15 @@ const CartItem = ({name, quantity}) => {
         <p>{quantity}</p>
         <button
             class="focus:outline-none bg-purple-700 hover:bg-purple-800 text-white font-bold py-1 px-1 rounded-full inline-flex items-center"
-        >
+            onClick={()=>updateCart('increment',id)}
+       >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                onClick={()=>clickHandler('increment')}
+               
             >
                 <path
                     stroke-linecap="round"

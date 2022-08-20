@@ -1,20 +1,33 @@
 
+import {ADD_TO_CART,INCREMENT_CART,DECREMENT_CART} from "../actionTypes";
 
-export const addProduct = 'products/addProduct';
 
-export const increment = () => {
 
+export const addToCart = (product) => {
     return {
-        type: '',
+        type: ADD_TO_CART,
+        payload : product
         
     }
+ 
 };
 
-export const decrement = () => {
 
+
+export const incrementCart=(id)=>{
+   
     return {
-        type: '',
-    
+        type: INCREMENT_CART,
+        payload : id
+        
     }
-};
 
+}
+
+export const decrementCart=(id)=>{
+    return {
+        type: DECREMENT_CART,
+        payload : id
+        
+    }
+}
